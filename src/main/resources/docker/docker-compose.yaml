@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: 'postgres'
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    networks:
+      - watchcat
+    volumes:
+      - postgres:/data/postgres
+    environment:
+      - POSTGRES_DB="azuque-sniffer"
+      - POSTGRES_USER="azuque-sniffer"
+      - POSTGRES_PASSWORD="azuque-sniffer"
+
+  azuque-sniffer:
+    container_name: 'azuque-sniffer-app'
+    image: azuque-sniffer
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "6661:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/azuque-sniffer?currentSchema=azuque-sniffer
+      - SPRING_DATASOURCE_USERNAME="azuque-sniffer"
+      - SPRING_DATASOURCE_PASSWORD="azuque-sniffer"
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+volumes:
+  postgres:
