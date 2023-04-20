@@ -1,1 +1,18 @@
-
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/azuque-sniffer?currentSchema=azuque-sniffer
+    username: azuque-sniffer
+    password: azuque-sniffer
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  liquibase:
+    change-log: classpath:/liquibase/changelog.yaml
+    default-schema: azuque-sniffer
+server:
+  port: 6661
+  servlet:
+    context-path: /azuque-sniffer
